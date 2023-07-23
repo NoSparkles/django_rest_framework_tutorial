@@ -2,6 +2,7 @@ from rest_framework import generics, mixins, authentication
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from api.authentication import TokenAuthentication
 from api.mixins import StaffEditorPermissionMixin, UserQuerySetMixin
@@ -13,7 +14,7 @@ from .serializers import ProductSerializer
 class ProductListCreateAPIView(UserQuerySetMixin, StaffEditorPermissionMixin, generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    authentication_classes = [authentication.SessionAuthentication, TokenAuthentication]
+    authentication_classes = [authentication.SessionAuthentication, JWTAuthentication]
 
     def perform_create(self, serializer):
         print(serializer)

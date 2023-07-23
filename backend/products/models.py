@@ -1,9 +1,13 @@
+import random
+
 from django.db import models
 from django.conf import settings
 from django.db.models import QuerySet
 from django.db.models import Q
 
 User = settings.AUTH_USER_MODEL
+
+TAGS_MODEL_VALUES = ['electronics', 'cars', 'boats', 'movies', 'cameras']
 
 class ProductQuerySet(QuerySet):
     def is_public(self):
@@ -33,6 +37,13 @@ class Product(models.Model):
     public = models.BooleanField(default=True)
 
     objects = ProductManager()
+
+    def is_public(self):
+        return self.public
+    
+    def get_tags_list(self):
+        return [random.choice(TAGS_MODEL_VALUES)]
+
 
     @property
     def sale_price(self):
